@@ -1,0 +1,14 @@
+{
+  "name": "local-personal-ai-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Prototype local gratuit pour creer une IA personnalisee avec documents, memoire et Ollama.",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "node server/index.js",
+    "start": "node server/index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Forge IA Locale</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="ambient-layer" aria-hidden="true">
+      <div class="scanline"></div>
+      <div class="grid-plane"></div>
+      <div class="light-beam beam-a"></div>
+      <div class="light-beam beam-b"></div>
+    </div>
+
+    <div class="app-shell">
+      <aside class="rail">
+        <div class="brand">
+          <div class="brand-mark">
+            <span>AI</span>
+          </div>
+          <div>
+            <strong>Forge IA</strong>
+            <span>Local neural lab</span>
+          </div>
+        </div>
+
+        <button class="primary-button full" id="createAssistantButton" type="button">
+          <span class="button-spark"></span>
+          Nouvelle IA
+        </button>
+
+        <div class="rail-section">
+          <div class="section-title">Assistants</div>
+          <div id="assistantList" class="assistant-list"></div>
+        </div>
+
+        <div class="rail-footer">
+          <div class="health-card" id="healthCard">
+            <span class="status-dot"></span>
+            <div>
+              <strong>Ollama</strong>
+              <span id="healthText">Verification...</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Local RAG console</p>
+            <h1 id="assistantTitle">Nova Local</h1>
+          </div>
+          <div class="topbar-actions">
+            <span class="lab-badge">Offline first</span>
+            <span class="model-pill" id="modelPill">Modele local</span>
+            <label class="toggle">
+              <input type="checkbox" id="strictToggle" />
+              <span>Documents seulement</span>
+            </label>
+          </div>
+        </header>
+
+        <section class="main-grid">
+          <section class="chat-panel" aria-label="Chat">
+            <div class="chat-stream" id="messageList"></div>
+            <form class="composer" id="chatForm">
+              <textarea
+                id="messageInput"
+                rows="3"
+                placeholder="Pose une question a ton IA..."
+                autocomplete="off"
+              ></textarea>
+              <div class="composer-actions">
+                <span id="chatHint">Shift + Entree pour une nouvelle ligne</span>
+                <button class="primary-button" id="sendButton" type="submit">Envoyer</button>
+              </div>
+            </form>
+          </section>
+
+          <aside class="control-panel" aria-label="Reglages">
+            <section class="panel-block">
+              <div class="section-heading">
+                <h2>Documents</h2>
+                <span id="documentCount">0</span>
+              </div>
+              <div class="dropzone" id="dropzone">
+                <input id="fileInput" type="file" multiple hidden accept=".txt,.md,.markdown,.pdf,.doc,.docx,.rtf,.csv,.json,.log" />
+                <strong>Glisse tes fichiers ici</strong>
+                <span>PDF, DOCX, TXT, MD, CSV</span>
+                <button class="secondary-button" id="pickFilesButton" type="button">Choisir</button>
+              </div>
+              <div class="small-status" id="uploadStatus"></div>
+              <div class="document-list" id="documentList"></div>
+            </section>
+
+            <section class="panel-block">
+              <div class="section-heading">
+                <h2>Personnalite</h2>
+                <button class="text-button" id="saveAssistantButton" type="button">Sauver</button>
+              </div>
+              <div class="field-grid">
+                <label>
+                  <span>Nom</span>
+                  <input id="assistantName" type="text" />
+                </label>
+                <label>
+                  <span>Role</span>
+                  <textarea id="assistantRole" rows="3"></textarea>
+                </label>
+                <label>
+                  <span>Style</span>
+                  <textarea id="assistantStyle" rows="3"></textarea>
+                </label>
+                <label>
+                  <span>Utilisateur vise</span>
+                  <input id="assistantAudience" type="text" />
+                </label>
+              </div>
+              <div class="persona-row">
+                <button class="chip" data-persona="prof" type="button">Prof</button>
+                <button class="chip" data-persona="coach" type="button">Coach</button>
+                <button class="chip" data-persona="analyste" type="button">Analyste</button>
+                <button class="chip" data-persona="createur" type="button">Createur</button>
+              </div>
+            </section>
+
+            <section class="panel-block">
+              <div class="section-heading">
+                <h2>Memoire</h2>
+                <span id="memoryCount">0</span>
+              </div>
+              <form class="memory-form" id="memoryForm">
+                <input id="memoryInput" type="text" placeholder="Ajouter une preference ou un fait important" />
+                <button class="secondary-button" type="submit">Ajouter</button>
+              </form>
+              <div class="memory-list" id="memoryList"></div>
+            </section>
+
+            <section class="panel-block">
+              <div class="section-heading">
+                <h2>Modeles</h2>
+                <button class="text-button" id="saveSettingsButton" type="button">Sauver</button>
+              </div>
+              <div class="field-grid two">
+                <label>
+                  <span>Chat</span>
+                  <input id="chatModel" list="chatModelOptions" type="text" />
+                  <datalist id="chatModelOptions">
+                    <option value="llama3.2:3b"></option>
+                    <option value="qwen2.5:7b"></option>
+                    <option value="mistral:7b"></option>
+                    <option value="gemma3:4b"></option>
+                  </datalist>
+                </label>
+                <label>
+                  <span>Embeddings</span>
+                  <input id="embeddingModel" list="embeddingModelOptions" type="text" />
+                  <datalist id="embeddingModelOptions">
+                    <option value="nomic-embed-text"></option>
+                    <option value="mxbai-embed-large"></option>
+                  </datalist>
+                </label>
+                <label>
+                  <span>Temperature</span>
+                  <input id="temperature" type="range" min="0" max="1" step="0.05" />
+                </label>
+                <label>
+                  <span>Sources</span>
+                  <input id="retrievalLimit" type="number" min="2" max="10" />
+                </label>
+              </div>
+              <div class="setup-box" id="setupBox"></div>
+            </section>
+
+            <section class="panel-block terminal-panel">
+              <div class="section-heading">
+                <h2>Terminal safe</h2>
+                <button class="text-button" id="clearTerminalButton" type="button">Clear</button>
+              </div>
+              <div class="terminal-output" id="terminalOutput" aria-live="polite"></div>
+              <div class="terminal-quick-row" aria-label="Commandes rapides">
+                <button class="chip terminal-quick" data-command="ollama health" type="button">Health</button>
+                <button class="chip terminal-quick" data-command="ollama list" type="button">List</button>
+                <button class="chip terminal-quick" data-command="ollama --version" type="button">Version</button>
+                <button class="chip terminal-quick" data-command="ollama pull llama3.2:3b" type="button">Pull 3B</button>
+                <button class="chip terminal-quick" data-command="ollama pull nomic-embed-text" type="button">Pull Embed</button>
+              </div>
+              <form class="terminal-form" id="terminalForm">
+                <span class="terminal-prompt">$</span>
+                <input
+                  id="terminalInput"
+                  type="text"
+                  autocomplete="off"
+                  spellcheck="false"
+                  placeholder="help, ollama list, ollama pull llama3.2:3b"
+                />
+                <button class="secondary-button" id="runTerminalButton" type="submit">Run</button>
+              </form>
+            </section>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
